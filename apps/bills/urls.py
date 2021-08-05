@@ -5,5 +5,6 @@ from .views import *
 
 
 urlpatterns = [
-    path('create/', CreateBillView.as_view(), name='create-bill')
+    path('create/', CreateBillView.as_view(), name='create-bill'),
+    path('success/', SuccessBillView.as_view(), name='success-bill'),
 ]

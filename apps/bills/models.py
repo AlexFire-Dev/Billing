@@ -58,23 +58,18 @@ class Bill(models.Model):
             return
 
     def success(self):
-        pass
+        try:
+            request_data = {
+                'id': self.id,
+                'status': self.status,
+                'amount': {
+                    'currency': 'RUB',
+                    'value': str(self.amount)
+                },
+                'comment': self.comment,
+            }
 
-        # try:
-        #     request_data = {
-        #         'amount': {
-        #             'currency': 'RUB',
-        #             'value': str(self.amount)
-        #         },
-        #         'comment': self.comment,
-        #         'expirationDateTime': expirationDateTime,
-        #         'customFields': {
-        #             'paySourcesFilter': 'card, qw'
-        #         }
-        #     }
-        #
-        #
-        #
-        #     response = requests.put(f'https://api.qiwi.com/partner/bill/v1/bills/{settings.QIWI_DB_VERSION}_{self.id}/', headers=headers, data=request_data)
-        # except:
-        #     return
+            response = requests.post(self.site, data=request_data)
+            return response
+        except:
+            return None
