@@ -2,6 +2,8 @@
 
 {% block main %}
     <form class="container" method="post" action="{% url 'create-bill' %}">
+        {% csrf_token %}
+
         <br>
         <div>
             <label for="amount" class="form-label">Сумма:</label>
