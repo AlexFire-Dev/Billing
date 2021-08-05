@@ -20,6 +20,7 @@ class CreateBillView(View):
         try:
             comment = request.POST.get('comment', '')
             amount = float(request.POST['amount'])
+            amount = round(amount, 2)
             site = request.POST['site']
 
             bill = Bill.objects.create(comment=comment, amount=amount, site=site)
