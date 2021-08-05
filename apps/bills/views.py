@@ -19,15 +19,20 @@ class CreateBillView(View):
     def post(self, request, *args, **kwargs):
         try:
             comment = request.POST.get('comment', '')
+            print(1)
             amount = float(request.POST['amount'])
+            print(2)
             site = request.POST.get['site']
+            print(3)
 
             bill = Bill.objects.create(comment=comment, amount=amount, site=site)
+            print(4)
 
             response = {
                 'id': bill.id,
                 'payUrl': bill.get_url()
             }
+            print(5)
 
             return HttpResponse(json.dumps(response), content_type='application/json', status=201)
         except:
