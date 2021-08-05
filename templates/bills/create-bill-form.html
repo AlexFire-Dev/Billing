@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block main %}
+    <form class="container" method="post" action="{% url 'create-bill' %}">
+        <br>
+        <div>
+            <label for="amount" class="form-label">Сумма:</label>
+            <div class="input-group has-validation">
+                <span class="input-group-text" id="span_amount">₽</span>
+                <input type="text" class="form-control" name="amount" id="amount" aria-describedby="span_amount" required>
+                <div class="invalid-feedback">Введите сумму!</div>
+            </div>
+        </div>
+        <br>
+        <div>
+            <label for="comment" class="form-label">Комментарий:</label>
+            <input type="text" class="form-control" name="comment" id="comment" value="Без комментариев" required>
+            <div class="valid-feedback">Выглядит неплохо!</div>
+        </div>
+        <br>
+        <div>
+            <label for="site" class="form-label">URL для обратной связи:</label>
+            <input type="text" class="form-control" name="site" id="site" required>
+            <div class="valid-feedback">Выглядит неплохо!</div>
+        </div>
+        <br>
+        <button class="btn btn-primary" type="submit">Создать</button>
+    </form>
+{% endblock %}

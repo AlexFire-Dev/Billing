@@ -7,6 +7,14 @@ from django.views.generic import View, TemplateView, CreateView, UpdateView, Red
 from .models import *
 
 
+class IndexBillView(TemplateView):
+    template_name = 'bills/index.html'
+
+
+class CreateBillFormView(TemplateView):
+    template_name = 'bills/create-bill-form.html'
+
+
 class CreateBillView(View):
     def post(self, request, *args, **kwargs):
         try:

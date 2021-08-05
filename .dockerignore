@@ -5,6 +5,7 @@
 !apps/
 !templates/
 !Billing/
+!assets/
 
 !manage.py
 !requirements.txt

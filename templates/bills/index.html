@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block main %}
+    <div class="container">
+        <br>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Создать новый счёт!</h5>
+                <br>
+                <a href="{% url 'create-bill-form' %}" class="btn btn-primary">Открыть форму</a>
+            </div>
+        </div>
+        <br>
+    </div>
+{% endblock %}
