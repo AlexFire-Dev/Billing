@@ -32,9 +32,6 @@ class Bill(models.Model):
                 },
                 'comment': str(self.comment),
                 'expirationDateTime': str(expirationDateTime),
-                'customFields': {
-                    'paySourcesFilter': 'card, qw'
-                }
             }
             request_data = json.dumps(request_data)
             response = requests.put(f'https://api.qiwi.com/partner/bill/v1/bills/{settings.QIWI_DB_VERSION}_{self.id}/', headers=headers, data=request_data)

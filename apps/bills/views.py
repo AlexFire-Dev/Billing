@@ -44,9 +44,9 @@ class CreateBillFormView(TemplateView):
 def CreateBillView(request):
     try:
         comment = request.POST.get('comment', '')
-        amount = float(request.POST['amount'])
+        amount = float(request.POST.get('amount', '1.00'))
         amount = round(amount, 2)
-        site = request.POST['site']
+        site = request.POST.get('site', '')
 
         bill = Bill.objects.create(comment=comment, amount=amount, site=site)
 
@@ -57,7 +57,7 @@ def CreateBillView(request):
 
         return Response(response, status=201)
     except:
-        return Response({'status': 'something went wrong'}, status=500)
+        return Response({'status': 'something went wrong'}, status=400)
 
 
 class SuccessBillView(View):
