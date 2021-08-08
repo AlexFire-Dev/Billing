@@ -57,7 +57,19 @@ class Bill(models.Model):
             return
 
     def success(self):
+        import hmac
+        import hashlib
+
         try:
+            secret_key = bytes(settings.OPLATA_KEY)
+            message = bytes(f'{self.id}|{self.status}|RUB|{self.amount}')
+            signature = hmac.new(secret_key, message, hashlib.sha256).hexdigest()
+
+            headers = {
+                'Content-Type': 'application/json',
+                'X-Api-Signature-SHA256': signature,
+            }
+
             request_data = {
                 'id': self.id,
                 'status': self.status,
@@ -70,7 +82,7 @@ class Bill(models.Model):
 
             request_data = json.dumps(request_data)
 
-            response = requests.post(self.site, data=request_data)
+            response = requests.post(self.site, data=request_data, headers=headers)
             return response
         except:
             return None

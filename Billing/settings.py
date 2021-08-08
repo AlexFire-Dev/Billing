@@ -28,6 +28,8 @@ QIWI_SECRET_KEY = os.getenv('QIWI_SECRET_KEY')
 QIWI_PUBLIC_KEY = os.getenv('QIWI_PUBLIC_KEY')
 QIWI_DB_VERSION = os.getenv('QIWI_DB_VERSION')
 
+OPLATA_KEY = os.getenv('OPLATA_KEY')
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(int(os.getenv('DEBUG', '1')))
 

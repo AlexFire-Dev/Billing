@@ -6,6 +6,8 @@ _**Billing**_
 `location - deploy/conf.env`
 `port - 9000`
 
+`X-Api-Signature-SHA256 - {id}|{status}|{amount.currency}|{amount.value}`
+
 
 ~~~~
 PYTHONBUFFEERED=1
