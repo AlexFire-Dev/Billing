@@ -24,8 +24,8 @@ class CreateBillFormView(TemplateView):
 @api_view(['POST'])
 def CreateBillView(request):
     try:
-        comment = request.POST.get('comment', '')
-        amount = float(request.POST.get('amount', '1.00'))
+        comment = request.data.get('comment', '')
+        amount = float(request.data.get('amount', '1.00'))
         amount = round(amount, 2)
         site = request.POST.get('site', '')
 
