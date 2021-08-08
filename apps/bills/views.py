@@ -1,4 +1,5 @@
 import json
+import hmac
 
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
@@ -18,26 +19,6 @@ class IndexBillView(TemplateView):
 
 class CreateBillFormView(TemplateView):
     template_name = 'bills/create-bill-form.html'
-
-
-# class CreateBillView(View):
-#     def post(self, request, *args, **kwargs):
-#         try:
-#             comment = request.POST.get('comment', '')
-#             amount = float(request.POST['amount'])
-#             amount = round(amount, 2)
-#             site = request.POST['site']
-#
-#             bill = Bill.objects.create(comment=comment, amount=amount, site=site)
-#
-#             response = {
-#                 'id': bill.id,
-#                 'payUrl': bill.get_url()
-#             }
-#
-#             return HttpResponse(json.dumps(response), content_type='application/json', status=201)
-#         except:
-#             return HttpResponse('Something went wrong!', status=400)
 
 
 @api_view(['POST'])
@@ -62,18 +43,35 @@ def CreateBillView(request):
 
 class SuccessBillView(View):
     def post(self, request, *args, **kwargs):
+        import hmac
+        import hashlib
+
         try:
             data = request.POST['bill']
 
-            len_QIWI_DB_VERSION = len(f'{settings.QIWI_DB_VERSION}_')
-            bill_id = int(data['billId'][len_QIWI_DB_VERSION:])
+            currency = data['amount']['currency']
+            value = data['amount']['value']
+            billId = data['billId']
+            siteId = data['siteId']
+            status = data['status']['value']
 
-            bill = Bill.objects.get(id=bill_id)
-            bill.status = data['status']['value']
-            bill.save()
+            secret_key = bytes(settings.QIWI_SECRET_KEY)
+            message = bytes(f'{currency}|{value}|{billId}|{siteId}|{status}')
+            my_signature = hmac.new(secret_key, message, hashlib.sha256).hexdigest()
+            http_signature = request.headers.get('X-Api-Signature-SHA256').decode('UTF-8')
 
-            bill.success()
+            if my_signature == http_signature:
+                len_QIWI_DB_VERSION = len(f'{settings.QIWI_DB_VERSION}_')
+                bill_id = int(data['billId'][len_QIWI_DB_VERSION:])
 
-            return HttpResponse('Ok!', status=202)
+                bill = Bill.objects.get(id=bill_id)
+                bill.status = data['status']['value']
+                bill.save()
+
+                bill.success()
+
+                return HttpResponse('Ok!', status=200)
+            else:
+                return HttpResponse('Signature is incorrect!', status=409)
         except:
             return HttpResponse('Something went wrong!', status=500)
